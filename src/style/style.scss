@@ -51,6 +51,7 @@ header {
   width: 100%;
   position: relative;
   padding: 5px 10px;
+  height: fit-content;
 
   &__header-wrapper {
     display: flex;
@@ -67,6 +68,13 @@ header {
     height: 20px;
     background-color: rgba(77, 227, 80, 0.7);
     border-radius: 50%;
+  }
+
+  &__tasks-wrapper{
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
   }
 }
 
