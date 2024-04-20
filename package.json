@@ -1,0 +1,17 @@
+{
+  "name": "scrum-board",
+  "version": "1.0.0",
+  "description": "Scrum board project for managing tasks",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.12.0",
+    "parcel": "^2.12.0",
+    "sass": "^1.75.0"
+  }
+}
