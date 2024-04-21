@@ -4,25 +4,23 @@ export const configureModalDefault = (modal, elementToOpen) => {
     let span = modal.getElementsByClassName("close")[0];
 
     elementToOpen.onclick = function() {
+        fetchUsersAndPopulateSelect(modal.querySelector('select')).then(r => {} )
         openModal(modal);
     }
 
     span.onclick = function() {
         closeModal(modal);
-        clearNewTaskForm();
     }
 
     window.onclick = function(event) {
         if (event.target === modal) {
             closeModal(modal);
-            clearNewTaskForm();
         }
     }
 
     window.addEventListener('keydown', (event) => {
         if (event.key === "Escape") { // Check if the pressed key is "Escape"
             closeModal(modal);
-            clearNewTaskForm();
         }
     })
 }
@@ -120,6 +118,26 @@ export const createModalForTask = (taskElement) => {
     })
 }
 
+
+//write method that fetches api for users and waits until it gets the data
+const fetchUsers = async () => {
+    let response = await fetch('https://jsonplaceholder.typicode.com/users');
+    return await response.json();
+
+}
+
+const fetchUsersAndPopulateSelect = async (select) => {
+    let users = await fetchUsers();
+    console.log(users);
+    users.forEach(user => {
+        let option = document.createElement('option');
+        option.value = user.name;
+        option.textContent = user.name;
+        select.appendChild(option);
+    });
+
+}
+
 const getHtmlForModal = (taskObj) => {
     let taskModal = document.createElement("div");
     taskModal.classList.add("modal");
@@ -138,7 +156,7 @@ const getHtmlForModal = (taskObj) => {
                 <div class="field" id="${TaskManager.getIdForTaskField(taskObj.id, 'author')}">
                     <p class="value">${taskObj.author}</p>
                     <button class="edit-btn">Edit</button>
-                    <input type="text" class="edit-input" style="display: none;">
+                    <select class="edit-input">
                 </div>
             
             </div>
