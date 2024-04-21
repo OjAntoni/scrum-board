@@ -1,12 +1,22 @@
 import dragula from "dragula";
 
+let tasks = localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : [];
+
+const getTaskById = (id) => {
+    let find = tasks.find(task => task.id === Number.parseInt(id));
+    return find ? find : null;
+}
+
 let drake = dragula(Array.from(document.querySelectorAll('.column__tasks-wrapper')));
 drake.on('drop', (el, target, source, sibling) => {
-    let foundTask = tasks.find(task => task.id === Number.parseInt(el.id));
+    let foundTask = getTaskById(parseIdFromTaskElement(el));
     if(foundTask) foundTask.column = target.parentNode.id;
 });
 
-let tasks = localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : [];
+const getIdForTaskElement = id => `task_${id}`;
+const getIdForTaskModal = id => `taskModal_${id}`;
+const parseIdFromTaskElement = taskElement => taskElement.id.split('_')[1];
+
 const createTaskElement = (title, author, description) => {
     let newTask = {
         id: Math.trunc(Math.random()*10000),
@@ -21,7 +31,7 @@ const createTaskElement = (title, author, description) => {
 
     const taskElement = document.createElement('div');
     taskElement.classList.add('task');
-    taskElement.id = newTask.id+"";
+    taskElement.id = getIdForTaskElement(newTask.id);
     taskElement.innerHTML = `
                 <div class="task__header-wrapper">
                     <h3 class="task__title">
@@ -40,15 +50,13 @@ const createTaskElement = (title, author, description) => {
     `
     document.querySelector('.column__tasks-wrapper').appendChild(taskElement);
 
-    return newTask;
+    return taskElement;
 }
 
-const configureAddTaskModal = () => {
-    let modal = document.getElementById('newTaskModal');
-    let btn = document.getElementById('addTaskBtn');
-    let span = document.getElementsByClassName("close")[0];
+const configureModalDefault = (modal, elementToOpen) => {
+    let span = modal.getElementsByClassName("close")[0];
 
-    btn.onclick = function() {
+    elementToOpen.onclick = function() {
         openModal(modal);
     }
 
@@ -65,28 +73,32 @@ const configureAddTaskModal = () => {
     }
 
     window.addEventListener('keydown', (event) => {
-            if (event.key === "Escape") { // Check if the pressed key is "Escape"
-                let modal = document.getElementById('newTaskModal');
-                closeModal(modal);
-                clearNewTaskForm();
-            }
+        if (event.key === "Escape") { // Check if the pressed key is "Escape"
+            closeModal(modal);
+            clearNewTaskForm();
+        }
+    })
+}
+
+const configureAddTaskModal = () => {
+    let modal = document.getElementById('newTaskModal');
+    let btn = document.getElementById('addTaskBtn');
+
+    configureModalDefault(modal, btn);
+
+    btn.addEventListener("click", ()=>{
+        clearNewTaskForm();
     })
 
-    // Select the form
     let form = document.querySelector('.task-form');
-
-    // Add event listener
     form.addEventListener('submit', function(event) {
-        // Prevent the default form submission behavior
         event.preventDefault();
-
-        // Collect form data
         let title = document.getElementById('title').value;
         let author = document.getElementById('author').value;
         let description = document.getElementById('description').value;
         let date = document.getElementById('date').value;
-
-        createTaskElement(title, author, description)
+        let taskElement = createTaskElement(title, author, description);
+        createModalForTask(taskElement);
         closeModal(modal);
         clearNewTaskForm();
     });
@@ -119,11 +131,61 @@ const clearNewTaskForm = () => {
     document.getElementById('date').value = '';
 }
 
+const removeTask = (id) => {
+    let taskId = Number.parseInt(id);
+    let taskModal = document.querySelector(`#${getIdForTaskModal(taskId)}.modal`);
+    let taskElement = document.querySelector(`#${getIdForTaskElement(taskId)}.task`);
+
+    if(taskModal) taskModal.remove();
+    if(taskElement) taskElement.remove();
+
+    let taskById = getTaskById(taskId);
+    let index = tasks.findIndex(task => task.id === taskId);
+    if (index > -1) {
+        tasks.splice(index, 1);
+    }
+
+}
+const createModalForTask = (taskElemnt) => {
+    let taskObj = getTaskById(parseIdFromTaskElement(taskElemnt));
+    let taskModal = document.createElement("div");
+    taskModal.classList.add("modal");
+    taskModal.id = getIdForTaskModal(taskElemnt.id);
+    taskModal.innerHTML = `
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="task">
+            <div class="task__header-wrapper">
+                <h3 class="task__title">
+                    ${taskObj.title}
+                </h3>
+                <p class="task__author">
+                    ${taskObj.author}
+                </p>
+            </div>
+            <p class="task__description">
+                ${taskObj.description}
+            </p>
+            <p class="task__date">${new Date(taskObj.date).toDateString()}</p>
+            <button class="task__remove-btn btn">Remove</button>
+        </div>
+    </div>
+    `
+    document.body.appendChild(taskModal);
+    configureModalDefault(taskModal, taskElemnt);
+
+    let btn = taskModal.querySelector(".task__remove-btn");
+    btn.addEventListener('click', ()=>{
+        removeTask(taskObj.id);
+        closeModal(taskModal);
+    })
+}
+
 const renderTasks = () => {
     tasks.forEach(task => {
         const taskElement = document.createElement('div');
         taskElement.classList.add('task');
-        taskElement.id = task.id;
+        taskElement.id = getIdForTaskElement(task.id);
         taskElement.innerHTML = `
                 <div class="task__header-wrapper">
                     <h3 class="task__title">
@@ -140,8 +202,8 @@ const renderTasks = () => {
                     ${new Date(task.date).toDateString()}
                 </p>`
         document.querySelector(`#${task.column} .column__tasks-wrapper`)?.appendChild(taskElement);
+        createModalForTask(taskElement);
 })};
-
 renderTasks();
 
 window.addEventListener('beforeunload', () => {
