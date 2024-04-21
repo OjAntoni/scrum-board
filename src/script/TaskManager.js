@@ -12,6 +12,9 @@ class TaskManager{
     getIdForTaskModal(id){return `taskModal_${id}`}
     parseIdFromTaskElement(taskElement){ return taskElement.id.split('_')[1]}
 
+    getIdForTaskField(id, field){return `task_${id}_${field}`}
+    parseFieldFromTaskField(taskFieldElement){ return taskFieldElement.id.split('_')[2]}
+
     createTaskElement(title, author, description){
         let newTask = {
             id: Math.trunc(Math.random()*10000),
@@ -28,6 +31,13 @@ class TaskManager{
         document.querySelector('.column__tasks-wrapper').appendChild(taskElement);
 
         return taskElement;
+    }
+
+    updateTaskElement(taskObj){
+        let taskElement = this.#getHtmlForTask(taskObj);
+        document.querySelector(`#${this.getIdForTaskElement(taskObj.id)}.task`).replaceWith(taskElement);
+        let modal = document.querySelector(`#${this.getIdForTaskModal(taskObj.id)}.modal`);
+        ModalUtils.configureModalDefault(modal, taskElement);
     }
 
     removeTask(id){

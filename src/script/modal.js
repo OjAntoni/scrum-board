@@ -80,6 +80,36 @@ export const createModalForTask = (taskElement) => {
     let taskObj = TaskManager.getTaskById(TaskManager.parseIdFromTaskElement(taskElement));
 
     let taskModal = getHtmlForModal(taskObj);
+
+    taskModal.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const field = btn.parentElement;
+            const valueSpan = field.querySelector('.value');
+            const editInput = field.querySelector('.edit-input');
+            // Display edit input and hide value span
+            valueSpan.style.display = 'none';
+            editInput.style.display = 'block';
+            editInput.value = valueSpan.textContent;
+            editInput.focus();
+        });
+    });
+
+    taskModal.querySelectorAll('.edit-input').forEach(input => {
+        input.addEventListener('blur', () => {
+            const field = input.parentElement;
+            const valueSpan = field.querySelector('.value');
+            const editInput = field.querySelector('.edit-input');
+            // Update value and display value span
+            valueSpan.textContent = editInput.value;
+            valueSpan.style.display = 'inline';
+            editInput.style.display = 'none';
+
+            taskObj[TaskManager.parseFieldFromTaskField(field)] = editInput.value;
+            TaskManager.updateTaskElement(taskObj);
+        });
+    });
+
+
     document.body.appendChild(taskModal);
     configureModalDefault(taskModal, taskElement);
 
@@ -99,16 +129,26 @@ const getHtmlForModal = (taskObj) => {
         <span class="close">&times;</span>
         <div class="task">
             <div class="task__header-wrapper">
-                <h3 class="task__title">
-                    ${taskObj.title}
-                </h3>
-                <p class="task__author">
-                    ${taskObj.author}
-                </p>
+            
+                <div class="field" id="${TaskManager.getIdForTaskField(taskObj.id, 'title')}">
+                    <h2 class="value">${taskObj.title}</h2>
+                    <button class="edit-btn">Edit</button>
+                    <input type="text" class="edit-input" style="display: none;">
+                </div>
+                <div class="field" id="${TaskManager.getIdForTaskField(taskObj.id, 'author')}">
+                    <p class="value">${taskObj.author}</p>
+                    <button class="edit-btn">Edit</button>
+                    <input type="text" class="edit-input" style="display: none;">
+                </div>
+            
             </div>
-            <p class="task__description">
-                ${taskObj.description}
-            </p>
+            
+            <div class="field" id="${TaskManager.getIdForTaskField(taskObj.id, 'description')}">
+                <p class="value">${taskObj.description}</p>
+                <button class="edit-btn">Edit</button>
+                <input type="text" class="edit-input" style="display: none;">
+            </div>
+            
             <p class="task__date">${new Date(taskObj.date).toDateString()}</p>
             <button class="task__remove-btn btn">Remove</button>
         </div>
@@ -116,4 +156,5 @@ const getHtmlForModal = (taskObj) => {
     `
     return taskModal;
 }
+
 

@@ -52,3 +52,15 @@
   flex-direction: column;
   row-gap: 10px;
 }
+
+.edit-input {
+  display: block;
+}
+
+.edit-btn {
+  display: none;
+}
+
+.field:hover .edit-btn {
+  display: inline-block;
+}
