@@ -24,25 +24,7 @@ class TaskManager{
 
         this.#tasks.push(newTask)
 
-        const taskElement = document.createElement('div');
-        taskElement.classList.add('task');
-        taskElement.id = this.getIdForTaskElement(newTask.id);
-        taskElement.innerHTML = `
-                <div class="task__header-wrapper">
-                    <h3 class="task__title">
-                        ${newTask.title}
-                    </h3>
-                    <p class="task__author">
-                        ${newTask.author}
-                    </p>
-                </div>
-                <p class="task__description">
-                    ${newTask.description}
-                </p>
-                <p class="task__date">
-                    ${new Date(newTask.date).toDateString()}
-                </p>
-    `
+        const taskElement = this.#getHtmlForTask(newTask);
         document.querySelector('.column__tasks-wrapper').appendChild(taskElement);
 
         return taskElement;
@@ -64,10 +46,20 @@ class TaskManager{
 
     renderTasks(){
         this.#tasks.forEach(task => {
-            const taskElement = document.createElement('div');
-            taskElement.classList.add('task');
-            taskElement.id = this.getIdForTaskElement(task.id);
-            taskElement.innerHTML = `
+            const taskElement = this.#getHtmlForTask(task);
+            document.querySelector(`#${task.column} .column__tasks-wrapper`)?.appendChild(taskElement);
+            ModalUtils.createModalForTask(taskElement);
+        })};
+
+    saveTasks(){
+        localStorage.setItem('tasks', JSON.stringify(this.#tasks));
+    }
+
+    #getHtmlForTask(task){
+        const taskElement = document.createElement('div');
+        taskElement.classList.add('task');
+        taskElement.id = this.getIdForTaskElement(task.id);
+        taskElement.innerHTML = `
                 <div class="task__header-wrapper">
                     <h3 class="task__title">
                         ${task.title}
@@ -82,12 +74,7 @@ class TaskManager{
                 <p class="task__date ">
                     ${new Date(task.date).toDateString()}
                 </p>`
-            document.querySelector(`#${task.column} .column__tasks-wrapper`)?.appendChild(taskElement);
-            ModalUtils.createModalForTask(taskElement);
-        })};
-
-    saveTasks(){
-        localStorage.setItem('tasks', JSON.stringify(this.#tasks));
+        return taskElement;
     }
 }
 
