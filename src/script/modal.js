@@ -1,4 +1,4 @@
-import {createTaskElement, getIdForTaskModal, getTaskById, parseIdFromTaskElement, removeTask} from "./index";
+import TaskManager from "./TaskManager";
 
 export const configureModalDefault = (modal, elementToOpen) => {
     let span = modal.getElementsByClassName("close")[0];
@@ -44,7 +44,7 @@ export const configureAddTaskModal = () => {
         let author = document.getElementById('author').value;
         let description = document.getElementById('description').value;
         let date = document.getElementById('date').value;
-        let taskElement = createTaskElement(title, author, description);
+        let taskElement = TaskManager.createTaskElement(title, author, description);
         createModalForTask(taskElement);
         closeModal(modal);
         clearNewTaskForm();
@@ -77,10 +77,10 @@ export const clearNewTaskForm = () => {
 }
 
 export const createModalForTask = (taskElemnt) => {
-    let taskObj = getTaskById(parseIdFromTaskElement(taskElemnt));
+    let taskObj = TaskManager.getTaskById(TaskManager.parseIdFromTaskElement(taskElemnt));
     let taskModal = document.createElement("div");
     taskModal.classList.add("modal");
-    taskModal.id = getIdForTaskModal(taskElemnt.id);
+    taskModal.id = TaskManager.getIdForTaskModal(taskElemnt.id);
     taskModal.innerHTML = `
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -106,7 +106,7 @@ export const createModalForTask = (taskElemnt) => {
 
     let btn = taskModal.querySelector(".task__remove-btn");
     btn.addEventListener('click', ()=>{
-        removeTask(taskObj.id);
+        TaskManager.removeTask(taskObj.id);
         closeModal(taskModal);
     })
 }
