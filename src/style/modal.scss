@@ -20,9 +20,8 @@
   background-color: #fefefe;
   margin: 10% auto; /* 10% from the top and centered */
   border-radius: 10px;
-  padding: 20px;
-  width: 80%; /* Could be responsive width */
-  max-width: 800px;
+  padding: 20px 20px 10px;
+  width: 50%;
   transform: translateY(-50px); /* Start slightly above */
   opacity: 0; /* Start with zero opacity */
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Animate transform and opacity */
@@ -59,8 +58,84 @@
 
 .edit-btn {
   display: none;
+  border: none;
+  border-radius: 50%;
+  height: 18px;
+  width: 18px;
+  margin: 0 5px;
+  svg{
+    height: 100%;
+    aspect-ratio: 1;
+  }
+
 }
 
 .field:hover .edit-btn {
   display: inline-block;
 }
+
+.field{
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.modal-content .task__header-wrapper{
+  flex-direction: column;
+  row-gap: 5px;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.modal{
+  &__title{
+    .value{
+      max-width: calc(100% - 20px);
+    }
+  }
+
+  &__author{
+    .value{
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      padding: 2px;
+      background-color: #f5f5f5;
+      border-radius: 3px;
+    }
+  }
+
+  &__description{
+    .value{
+      max-width: calc(100% - 20px);
+    }
+    .edit-input{
+      width: calc(100% - 15px);
+      height: max-content;
+      resize: none;
+    }
+  }
+
+  .task__remove-btn{
+    display: inline;
+    padding: 5px 8px;
+    background-color: #d23d3d;
+    color: white;
+    border-radius: 5px;
+    width: fit-content;
+    align-self: center;
+  }
+
+}
+
+.addTask-btn{
+  background-color: #7baf45;
+  padding: 5px 8px;
+  border-radius: 5px;
+  width: fit-content;
+  align-self: center;
+  color: white;
+}
+
+
+

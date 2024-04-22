@@ -108,6 +108,12 @@ export const createModalForTask = (taskElement) => {
         });
     });
 
+    console.log(taskModal.id)
+    let textArea = taskModal.querySelector(`#${taskModal.id} .modal__description .edit-input`);
+    textArea.addEventListener('input', () => {
+        textArea.rows = textArea.value.split('\n').length;
+    });
+
 
     document.body.appendChild(taskModal);
     configureModalDefault(taskModal, taskElement);
@@ -115,6 +121,7 @@ export const createModalForTask = (taskElement) => {
     let btn = taskModal.querySelector(".task__remove-btn");
     btn.addEventListener('click', ()=>{
         TaskManager.removeTask(taskObj.id);
+        TaskManager.renderColumnCounter(taskObj.column);
         closeModal(taskModal);
     })
 }
@@ -149,23 +156,37 @@ const getHtmlForModal = (taskObj) => {
         <div class="task">
             <div class="task__header-wrapper">
             
-                <div class="field" id="${TaskManager.getIdForTaskField(taskObj.id, 'title')}">
+                <div class="field modal__title" id="${TaskManager.getIdForTaskField(taskObj.id, 'title')}">
                     <h2 class="value">${taskObj.title}</h2>
-                    <button class="edit-btn">Edit</button>
                     <input type="text" class="edit-input" style="display: none;">
+                    <button class="edit-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                        </svg>
+                    </button>
                 </div>
-                <div class="field" id="${TaskManager.getIdForTaskField(taskObj.id, 'author')}">
-                    <p class="value">${taskObj.author}</p>
-                    <button class="edit-btn">Edit</button>
-                    <select class="edit-input"></select>
+                <div class="field modal__author" id="${TaskManager.getIdForTaskField(taskObj.id, 'author')}">
+                   
+                    <p class="value">${taskObj.author}</p>                                    
+                    <select class="edit-input" style="display: none;"></select>
+                    <button class="edit-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                        </svg>
+                    </button>
+                    
                 </div>
             
             </div>
             
-            <div class="field" id="${TaskManager.getIdForTaskField(taskObj.id, 'description')}">
-                <p class="value">${taskObj.description}</p>
-                <button class="edit-btn">Edit</button>
-                <input type="text" class="edit-input" style="display: none;">
+            <div class="field modal__description" id="${TaskManager.getIdForTaskField(taskObj.id, 'description')}">
+                <p class="value">${taskObj.description}</p>              
+                <textarea class="edit-input" style="display: none;"></textarea>
+                <button class="edit-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                        </svg>
+                </button>
             </div>
             
             <p class="task__date">${new Date(taskObj.date).toDateString()}</p>
