@@ -21,22 +21,26 @@
 }
 
 header {
-  width: 100vw;
+  width: 100%;
+  min-width: max-content;
   padding: 10px;
   background-color: cornflowerblue;
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+  position: relative;
+
 
   .header__title {
     font-size: 2rem;
     color: white;
+    align-self: center;
   }
 }
 
 .container {
   margin: 0 auto;
-  min-width: 1000px;
+  //min-width: 1000px;
   max-width: 1200px;
   display: flex;
   column-gap: 20px;

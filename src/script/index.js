@@ -1,5 +1,6 @@
 import dragula from "dragula";
 import * as ModalUtils from "./modal";
+import * as Clock from "./clock";
 import TaskManager from "./TaskManager";
 
 
@@ -10,6 +11,7 @@ drake.on('drop', (el, target, source, sibling) => {
 });
 
 ModalUtils.configureAddTaskModal();
+Clock.configureClock();
 
 TaskManager.renderTasks();
 
