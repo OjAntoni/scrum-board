@@ -70,6 +70,7 @@ class TaskManager{
         const taskElement = document.createElement('div');
         taskElement.classList.add('task');
         taskElement.id = this.getIdForTaskElement(task.id);
+        if(task.color) taskElement.style.backgroundColor = task.color;
         taskElement.innerHTML = `
                 <div class="task__header-wrapper">
                     <h3 class="task__title">
@@ -105,5 +106,17 @@ class TaskManager{
         column.textContent = `(${this.#tasks.filter(task => task.column === name).length})`
     }
 }
+
+export const COLORS = Object.freeze({
+    WHITE: 'white',
+    GREEN: 'rgb(223 253 223)',
+    YELLOW: '#ffffbb',
+    RED: 'rgb(255 144 144)',
+    BLUE: '#c9e9ff',
+    PURPLE: '#ffd3ff',
+    ORANGE: '#ffe0a8',
+    PINK: '#ffd7d7',
+    GREY: '#d7d7d7'
+})
 
 export default new TaskManager();

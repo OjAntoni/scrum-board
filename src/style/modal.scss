@@ -22,6 +22,7 @@
   border-radius: 10px;
   padding: 20px 20px 10px;
   width: 50%;
+  max-width: 600px;
   transform: translateY(-50px); /* Start slightly above */
   opacity: 0; /* Start with zero opacity */
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Animate transform and opacity */
@@ -33,7 +34,7 @@
   position: absolute;
   right: 8px;
   top: 0px;
-  color: #aaa;
+  color: #494949;
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -110,7 +111,7 @@
       max-width: calc(100% - 20px);
     }
     .edit-input{
-      width: calc(100% - 15px);
+      width: calc(100% - 35px);
       height: max-content;
       resize: none;
     }
@@ -135,6 +136,23 @@
   width: fit-content;
   align-self: center;
   color: white;
+}
+
+.color-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px; /* Adjust the gap between squares */
+}
+
+.color-square {
+  width: 20px; /* Adjust the width of each square */
+  height: 20px; /* Adjust the height of each square */
+  border: 1px solid #ccc; /* Add border for better visibility */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.color-square:hover {
+  border-color: #333; /* Change border color on hover */
 }
 
 

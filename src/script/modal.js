@@ -1,11 +1,12 @@
 import TaskManager from "./TaskManager";
+import {COLORS} from "./TaskManager"
 
 export const configureModalDefault = (modal, elementToOpen) => {
     let span = modal.getElementsByClassName("close")[0];
 
     elementToOpen.onclick = function() {
         if(modal.querySelector('select'))
-            fetchUsersAndPopulateSelect(modal.querySelector('select')).then(r => {} )
+            fetchUsersAndPopulateSelect(modal.querySelector('.modal__author select')).then(r => {} )
         openModal(modal);
     }
 
@@ -108,7 +109,6 @@ export const createModalForTask = (taskElement) => {
         });
     });
 
-    console.log(taskModal.id)
     let textArea = taskModal.querySelector(`#${taskModal.id} .modal__description .edit-input`);
     textArea.addEventListener('input', () => {
         textArea.rows = textArea.value.split('\n').length;
@@ -136,7 +136,6 @@ const fetchUsers = async () => {
 
 const fetchUsersAndPopulateSelect = async (select) => {
     let users = await fetchUsers();
-    console.log(users);
     users.forEach(user => {
         let option = document.createElement('option');
         option.value = user.name;
@@ -146,10 +145,24 @@ const fetchUsersAndPopulateSelect = async (select) => {
 
 }
 
+// const getHtmlForColorSelect = (colors) => {
+//     let colorSelect = document.createElement('select');
+//     colorSelect.classList.add('color-input');
+//     Object.values(COLORS).forEach(color => {
+//         let option = document.createElement('option');
+//         option.value = color;
+//         option.style.backgroundColor = color;
+//         colorSelect.appendChild(option);
+//     });
+//     return colorSelect;
+// }
+
 const getHtmlForModal = (taskObj) => {
     let taskModal = document.createElement("div");
     taskModal.classList.add("modal");
     taskModal.id = TaskManager.getIdForTaskModal(taskObj.id);
+    // let colorSelect = getHtmlForColorSelect(Object.values(COLORS));
+
     taskModal.innerHTML = `
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -165,6 +178,9 @@ const getHtmlForModal = (taskObj) => {
                         </svg>
                     </button>
                 </div>
+                
+               
+                
                 <div class="field modal__author" id="${TaskManager.getIdForTaskField(taskObj.id, 'author')}">
                    
                     <p class="value">${taskObj.author}</p>                                    
@@ -194,6 +210,44 @@ const getHtmlForModal = (taskObj) => {
         </div>
     </div>
     `
+    // taskModal.querySelector('.color-input').addEventListener('change', (event) => {
+    //     console.log(event.target.value)
+    //     content.style.backgroundColor = event.target.value;
+    //     taskObj.color = event.target.value;
+    //     document.querySelector(`#${TaskManager.getIdForTaskElement(taskObj.id)}`).style.backgroundColor = event.target.value;
+    //     document.querySelector(`#${TaskManager.getIdForTaskModal(taskObj.id)} .task`).style.backgroundColor = event.target.value;
+    //     TaskManager.updateTaskElement(taskObj);
+    // });
+
+    let colorContainer = document.createElement('div');
+    colorContainer.classList.add('color-container');
+
+    Object.values(COLORS).forEach(color => {
+        let colorSquare = document.createElement('div');
+        colorSquare.classList.add('color-square');
+        colorSquare.style.backgroundColor = color;
+        colorContainer.appendChild(colorSquare);
+
+        colorSquare.addEventListener('click', (event) => {
+            const selectedColor = event.target.style.backgroundColor;
+            content.style.backgroundColor = selectedColor
+            taskObj.color = selectedColor;
+            document.querySelector(`#${TaskManager.getIdForTaskElement(taskObj.id)}`).style.backgroundColor = selectedColor;
+            document.querySelector(`#${TaskManager.getIdForTaskModal(taskObj.id)} .task`).style.backgroundColor = selectedColor;
+            TaskManager.updateTaskElement(taskObj);
+        });
+    });
+
+    taskModal.querySelector('.task__header-wrapper').appendChild(colorContainer);
+
+    let content = taskModal.querySelector('.modal-content');
+    if(taskObj.color) {
+        taskModal.querySelector(`.modal-content`).style.backgroundColor = taskObj.color;
+        taskModal.querySelector(`.task`).style.backgroundColor = taskObj.color;
+        // taskModal.querySelector('.color-input').value = taskObj.color;
+
+    }
+
     return taskModal;
 }
 
