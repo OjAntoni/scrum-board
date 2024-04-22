@@ -5,7 +5,7 @@ export const configureModalDefault = (modal, elementToOpen) => {
     let span = modal.getElementsByClassName("close")[0];
 
     elementToOpen.onclick = function() {
-        if(modal.querySelector('select'))
+        if(modal.querySelector('.modal__author select '))
             fetchUsersAndPopulateSelect(modal.querySelector('.modal__author select')).then(r => {} )
         openModal(modal);
     }
@@ -14,18 +14,34 @@ export const configureModalDefault = (modal, elementToOpen) => {
         closeModal(modal);
     }
 
-    window.onclick = function(event) {
-        if (event.target === modal) {
-            closeModal(modal);
-        }
+    const isClickOnMargin = (event) => {
+        // Get the target element
+        const target = event.target;
+
+        // Get the bounding rectangle of the target element
+        const rect = modal.getBoundingClientRect();
+
+        // Check if click coordinates are within the margin area
+        const isClickOnMarginX = event.clientX < rect.left || event.clientX > rect.right;
+        const isClickOnMarginY = event.clientY < rect.top || event.clientY > rect.bottom;
+
+        // Return true if click occurred on margin area, false otherwise
+        return isClickOnMarginX || isClickOnMarginY;
     }
 
+    window.addEventListener('click', (event) => {
+        if (event.target === modal || isClickOnMargin(event)){
+            closeModal(modal);
+        }
+    });
     window.addEventListener('keydown', (event) => {
         if (event.key === "Escape") { // Check if the pressed key is "Escape"
             closeModal(modal);
         }
     })
 }
+
+
 
 export const configureAddTaskModal = () => {
     let modal = document.getElementById('newTaskModal');
