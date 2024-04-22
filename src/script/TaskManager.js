@@ -59,7 +59,8 @@ class TaskManager{
             const taskElement = this.#getHtmlForTask(task);
             document.querySelector(`#${task.column} .column__tasks-wrapper`)?.appendChild(taskElement);
             ModalUtils.createModalForTask(taskElement);
-        })};
+        })
+    };
 
     saveTasks(){
         localStorage.setItem('tasks', JSON.stringify(this.#tasks));
@@ -85,6 +86,23 @@ class TaskManager{
                     ${new Date(task.date).toDateString()}
                 </p>`
         return taskElement;
+    }
+
+    countByColumn(name){
+        return this.#tasks.filter(task => task.column === name).length;
+    }
+
+    renderColumnsCounters(){
+        document.querySelectorAll('.column').forEach(column => {
+            let columnName = column.id;
+            let count = this.countByColumn(columnName);
+            column.querySelector('.column__count').textContent = `(${count})`;
+        })
+    }
+
+    renderColumnCounter(name){
+        let column = document.querySelector(`#${name} .column__count`);
+        column.textContent = `(${this.#tasks.filter(task => task.column === name).length})`
     }
 }
 

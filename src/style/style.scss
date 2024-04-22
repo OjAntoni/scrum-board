@@ -80,6 +80,11 @@ header {
     flex-direction: column;
     row-gap: 10px;
   }
+
+  &__count{
+    display: inline-block;
+    margin-left: 10px;
+  }
 }
 
 .task {

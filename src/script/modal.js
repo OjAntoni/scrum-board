@@ -4,7 +4,8 @@ export const configureModalDefault = (modal, elementToOpen) => {
     let span = modal.getElementsByClassName("close")[0];
 
     elementToOpen.onclick = function() {
-        fetchUsersAndPopulateSelect(modal.querySelector('select')).then(r => {} )
+        if(modal.querySelector('select'))
+            fetchUsersAndPopulateSelect(modal.querySelector('select')).then(r => {} )
         openModal(modal);
     }
 
@@ -156,7 +157,7 @@ const getHtmlForModal = (taskObj) => {
                 <div class="field" id="${TaskManager.getIdForTaskField(taskObj.id, 'author')}">
                     <p class="value">${taskObj.author}</p>
                     <button class="edit-btn">Edit</button>
-                    <select class="edit-input">
+                    <select class="edit-input"></select>
                 </div>
             
             </div>
