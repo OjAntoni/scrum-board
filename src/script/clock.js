@@ -9,5 +9,5 @@ export const configureClock = () => {
 }
 
 const updateClock = (clockElement) => {
-    clockElement.textContent = new Date().toLocaleTimeString().slice(0,8);
+    clockElement.textContent = new Date().toTimeString().slice(0,8);
 }

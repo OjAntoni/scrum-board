@@ -15,14 +15,15 @@ class TaskManager{
     getIdForTaskField(id, field){return `task_${id}_${field}`}
     parseFieldFromTaskField(taskFieldElement){ return taskFieldElement.id.split('_')[2]}
 
-    createTaskElement(title, author, description){
+    createTaskElement(title, author, description, date){
         let newTask = {
             id: Math.trunc(Math.random()*10000),
             title: title,
             author: author,
             description: description,
             date: Date.now(),
-            column: 'todo'
+            column: 'todo',
+            expiration: date,
         }
 
         this.#tasks.push(newTask)

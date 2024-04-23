@@ -115,12 +115,19 @@
 
   &__description{
     .value{
-      max-width: calc(100% - 20px);
-    }
-    .edit-input{
-      width: calc(100% - 35px);
-      height: max-content;
-      resize: none;
+      max-width: 100%;
+      padding: 3px;
+      &:hover{
+        cursor: pointer;
+      }
+      &:focus{
+        outline: 0.1px solid #000000;
+        border-radius: 3px;
+        background-color: #ffffff;
+      }
+      &:focus:hover{
+        cursor: text;
+      }
     }
   }
 
@@ -160,6 +167,11 @@
 
 .color-square:hover {
   border-color: #333; /* Change border color on hover */
+}
+
+#newTaskModal #description{
+  resize: none;
+  min-height: 180px;
 }
 
 

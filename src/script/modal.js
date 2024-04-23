@@ -39,7 +39,8 @@ export const configureModalDefault = (modal, elementToOpen) => {
 export const configureAddTaskModal = () => {
     let modal = document.getElementById('newTaskModal');
     let btn = document.getElementById('addTaskBtn');
-
+    let select = modal.querySelector('.author');
+    fetchUsersAndPopulateSelect(select).then(r => {} )
     configureModalDefault(modal, btn);
 
     btn.addEventListener("click", ()=>{
@@ -53,7 +54,7 @@ export const configureAddTaskModal = () => {
         let author = document.getElementById('author').value;
         let description = document.getElementById('description').value;
         let date = document.getElementById('date').value;
-        let taskElement = TaskManager.createTaskElement(title, author, description);
+        let taskElement = TaskManager.createTaskElement(title, author, description, date);
         createModalForTask(taskElement);
         closeModal(modal);
         clearNewTaskForm();
@@ -109,18 +110,14 @@ export const createModalForTask = (taskElement) => {
             const valueSpan = field.querySelector('.value');
             const editInput = field.querySelector('.edit-input');
             // Update value and display value span
-            valueSpan.textContent = editInput.value;
+            if(editInput.value && editInput.value.trim())
+                valueSpan.textContent = editInput.value;
             valueSpan.style.display = 'inline';
             editInput.style.display = 'none';
 
             taskObj[TaskManager.parseFieldFromTaskField(field)] = editInput.value;
             TaskManager.updateTaskElement(taskObj);
         });
-    });
-
-    let textArea = taskModal.querySelector(`#${taskModal.id} .modal__description .edit-input`);
-    textArea.addEventListener('input', () => {
-        textArea.rows = textArea.value.split('\n').length;
     });
 
 
@@ -158,7 +155,6 @@ const getHtmlForModal = (taskObj) => {
     let taskModal = document.createElement("div");
     taskModal.classList.add("modal");
     taskModal.id = TaskManager.getIdForTaskModal(taskObj.id);
-    // let colorSelect = getHtmlForColorSelect(Object.values(COLORS));
 
     taskModal.innerHTML = `
     <div class="modal-content">
@@ -169,6 +165,17 @@ const getHtmlForModal = (taskObj) => {
                 <div class="field modal__title" id="${TaskManager.getIdForTaskField(taskObj.id, 'title')}">
                     <h2 class="value">${taskObj.title}</h2>
                     <input type="text" class="edit-input" style="display: none;">
+                    <button class="edit-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="field modal__expiration" id="${TaskManager.getIdForTaskField(taskObj.id, 'expiration')}">
+                    <spnan style="margin-right: 5px">Expiration:</spnan>
+                    <p class="value">${new Date(taskObj.expiration).toDateString()}</p>
+                    <input type="date" class="edit-input" style="display: none;">
                     <button class="edit-btn">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
@@ -191,13 +198,7 @@ const getHtmlForModal = (taskObj) => {
             </div>
             
             <div class="field modal__description" id="${TaskManager.getIdForTaskField(taskObj.id, 'description')}">
-                <p class="value">${taskObj.description}</p>              
-                <textarea class="edit-input" style="display: none;"></textarea>
-                <button class="edit-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-                        </svg>
-                </button>
+                <p class="value" contenteditable="true">${taskObj.description}</p>              
             </div>
             
             <p class="task__date">${new Date(taskObj.date).toDateString()}</p>
@@ -206,6 +207,12 @@ const getHtmlForModal = (taskObj) => {
     </div>
     `
 
+    taskModal.querySelector(".modal__description .value").addEventListener("blur", (e) => {
+        let description = e.target.innerText;
+        console.log(description)
+        TaskManager.getTaskById(taskObj.id).description = description;
+        TaskManager.updateTaskElement({...taskObj, description});
+    })
 
     let colorContainer = document.createElement('div');
     colorContainer.classList.add('color-container');
@@ -232,8 +239,6 @@ const getHtmlForModal = (taskObj) => {
     if(taskObj.color) {
         taskModal.querySelector(`.modal-content`).style.backgroundColor = taskObj.color;
         taskModal.querySelector(`.task`).style.backgroundColor = taskObj.color;
-        // taskModal.querySelector('.color-input').value = taskObj.color;
-
     }
 
     return taskModal;

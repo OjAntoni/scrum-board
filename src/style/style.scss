@@ -53,6 +53,7 @@ header {
   row-gap: 10px;
   background-color: #f5f5f5;
   width: 100%;
+  max-width: 420px;
   position: relative;
   padding: 5px 10px;
   height: fit-content;
@@ -93,9 +94,6 @@ header {
   padding: 5px 10px;
   display: flex;
   flex-direction: column;
-  &:hover{
-    cursor: pointer;
-  }
 
   &__header-wrapper {
     display: flex;
@@ -105,7 +103,19 @@ header {
     margin-bottom: 10px;
   }
 
+  &__description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: normal;
+  }
+
   &__date {
     align-self: end;
+  }
+}
+
+.container {
+  .task:hover{
+    cursor: pointer;
   }
 }
