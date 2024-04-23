@@ -30,7 +30,6 @@ header {
   margin-bottom: 20px;
   position: relative;
 
-
   .header__title {
     font-size: 2rem;
     color: white;
@@ -101,6 +100,11 @@ header {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+  }
+
+  &__title{
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__description {

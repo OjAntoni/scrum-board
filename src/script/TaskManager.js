@@ -83,7 +83,7 @@ class TaskManager{
         taskElement.innerHTML = `
                 <div class="task__header-wrapper">
                     <h3 class="task__title">
-                        ${task.title}
+                        ${this.#limitChars(task.title, 60)}
                     </h3>
                     <p class="task__author">
                         ${task.author}
@@ -117,10 +117,10 @@ class TaskManager{
 }
 
 export const COLORS = Object.freeze({
-    WHITE: 'white',
-    GREEN: 'rgb(223 253 223)',
+    WHITE: '#FFFFFFFF',
+    GREEN: '#DFFDDFFF',
     YELLOW: '#ffffbb',
-    RED: 'rgb(255 144 144)',
+    RED: '#FF9090FF',
     BLUE: '#c9e9ff',
     PURPLE: '#ffd3ff',
     ORANGE: '#ffe0a8',
