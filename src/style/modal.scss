@@ -84,15 +84,22 @@
 .modal-content .task__header-wrapper{
   flex-direction: column;
   row-gap: 5px;
-  width: 100%;
+  width: calc(100% - 20px);
   align-items: flex-start;
 }
 
 .modal{
   &__title{
+    width: 100%;
     .value{
-      max-width: calc(100% - 20px);
+      max-width: calc(100% - 30px);
+      width: fit-content;
+      display: inline-block;
     }
+    .edit-input{
+      width: calc(100% - 30px);
+    }
+
   }
 
   &__author{

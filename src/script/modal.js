@@ -15,17 +15,10 @@ export const configureModalDefault = (modal, elementToOpen) => {
     }
 
     const isClickOnMargin = (event) => {
-        // Get the target element
         const target = event.target;
-
-        // Get the bounding rectangle of the target element
         const rect = modal.getBoundingClientRect();
-
-        // Check if click coordinates are within the margin area
         const isClickOnMarginX = event.clientX < rect.left || event.clientX > rect.right;
         const isClickOnMarginY = event.clientY < rect.top || event.clientY > rect.bottom;
-
-        // Return true if click occurred on margin area, false otherwise
         return isClickOnMarginX || isClickOnMarginY;
     }
 
@@ -161,18 +154,6 @@ const fetchUsersAndPopulateSelect = async (select) => {
 
 }
 
-// const getHtmlForColorSelect = (colors) => {
-//     let colorSelect = document.createElement('select');
-//     colorSelect.classList.add('color-input');
-//     Object.values(COLORS).forEach(color => {
-//         let option = document.createElement('option');
-//         option.value = color;
-//         option.style.backgroundColor = color;
-//         colorSelect.appendChild(option);
-//     });
-//     return colorSelect;
-// }
-
 const getHtmlForModal = (taskObj) => {
     let taskModal = document.createElement("div");
     taskModal.classList.add("modal");
@@ -194,9 +175,7 @@ const getHtmlForModal = (taskObj) => {
                         </svg>
                     </button>
                 </div>
-                
-               
-                
+
                 <div class="field modal__author" id="${TaskManager.getIdForTaskField(taskObj.id, 'author')}">
                    
                     <p class="value">${taskObj.author}</p>                                    
@@ -226,14 +205,7 @@ const getHtmlForModal = (taskObj) => {
         </div>
     </div>
     `
-    // taskModal.querySelector('.color-input').addEventListener('change', (event) => {
-    //     console.log(event.target.value)
-    //     content.style.backgroundColor = event.target.value;
-    //     taskObj.color = event.target.value;
-    //     document.querySelector(`#${TaskManager.getIdForTaskElement(taskObj.id)}`).style.backgroundColor = event.target.value;
-    //     document.querySelector(`#${TaskManager.getIdForTaskModal(taskObj.id)} .task`).style.backgroundColor = event.target.value;
-    //     TaskManager.updateTaskElement(taskObj);
-    // });
+
 
     let colorContainer = document.createElement('div');
     colorContainer.classList.add('color-container');

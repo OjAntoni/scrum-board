@@ -93,6 +93,9 @@ header {
   padding: 5px 10px;
   display: flex;
   flex-direction: column;
+  &:hover{
+    cursor: pointer;
+  }
 
   &__header-wrapper {
     display: flex;

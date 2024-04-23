@@ -66,6 +66,14 @@ class TaskManager{
         localStorage.setItem('tasks', JSON.stringify(this.#tasks));
     }
 
+    #limitChars = (text, limit) => {
+        if (text.length > limit) {
+            text = text.substring(0, limit).trim();
+            text += '...';
+        }
+        return text;
+    }
+
     #getHtmlForTask(task){
         const taskElement = document.createElement('div');
         taskElement.classList.add('task');
@@ -81,7 +89,7 @@ class TaskManager{
                     </p>
                 </div>
                 <p class="task__description">
-                    ${task.description}
+                    ${this.#limitChars(task.description, 190)}
                 </p>
                 <p class="task__date ">
                     ${new Date(task.date).toDateString()}
