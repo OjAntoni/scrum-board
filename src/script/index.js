@@ -17,7 +17,7 @@ ModalUtils.configureAddTaskModal();
 Clock.configureClock();
 ModalUtils.configureDeleteAllModal();
 
-TaskManager.renderTasks();
+TaskManager.renderTasks((element) => {ModalUtils.createModalForTask(element)});
 TaskManager.renderColumnsCounters();
 
 window.addEventListener('beforeunload', () => {

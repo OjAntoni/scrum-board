@@ -137,7 +137,13 @@ export const createModalForTask = (taskElement) => {
             editInput.style.display = 'none';
 
             taskObj[TaskManager.parseFieldFromTaskField(field)] = editInput.value;
-            TaskManager.updateTaskElement(taskObj);
+
+            TaskManager.updateTaskElement(taskObj, (taskObj)=>{
+                configureModalDefault(
+                    document.querySelector(`#${TaskManager.getIdForTaskModal(taskObj.id)}`),
+                    document.querySelector(`#${TaskManager.getIdForTaskElement(taskObj.id)}`)
+                )
+            });
         });
     });
 
@@ -230,7 +236,12 @@ const getHtmlForModal = (taskObj) => {
         let description = e.target.innerText;
         console.log(description)
         TaskManager.getTaskById(taskObj.id).description = description;
-        TaskManager.updateTaskElement({...taskObj, description});
+        TaskManager.updateTaskElement({...taskObj, description}, (taskObj)=>{
+            configureModalDefault(
+                document.querySelector(`#${TaskManager.getIdForTaskModal(taskObj.id)}`),
+                document.querySelector(`#${TaskManager.getIdForTaskElement(taskObj.id)}`)
+            )
+        });
     })
 
     let colorContainer = document.createElement('div');
@@ -248,7 +259,12 @@ const getHtmlForModal = (taskObj) => {
             taskObj.color = selectedColor;
             document.querySelector(`#${TaskManager.getIdForTaskElement(taskObj.id)}`).style.backgroundColor = selectedColor;
             document.querySelector(`#${TaskManager.getIdForTaskModal(taskObj.id)} .task`).style.backgroundColor = selectedColor;
-            TaskManager.updateTaskElement(taskObj);
+            TaskManager.updateTaskElement(taskObj, (taskObj)=>{
+                configureModalDefault(
+                    document.querySelector(`#${TaskManager.getIdForTaskModal(taskObj.id)}`),
+                    document.querySelector(`#${TaskManager.getIdForTaskElement(taskObj.id)}`)
+                )
+            });
         });
     });
 

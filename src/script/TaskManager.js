@@ -1,4 +1,3 @@
-import * as ModalUtils from "./modal";
 
 class TaskManager{
     #tasks = localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : [];
@@ -34,11 +33,10 @@ class TaskManager{
         return taskElement;
     }
 
-    updateTaskElement(taskObj){
+    updateTaskElement(taskObj, callbackForTaskElement){
         let taskElement = this.#getHtmlForTask(taskObj);
         document.querySelector(`#${this.getIdForTaskElement(taskObj.id)}.task`).replaceWith(taskElement);
-        let modal = document.querySelector(`#${this.getIdForTaskModal(taskObj.id)}.modal`);
-        ModalUtils.configureModalDefault(modal, taskElement);
+        callbackForTaskElement(taskObj);
     }
 
     removeTask(id){
@@ -55,11 +53,11 @@ class TaskManager{
         }
     }
 
-    renderTasks(){
+    renderTasks(callableForTaskElement){
         this.#tasks.forEach(task => {
             const taskElement = this.#getHtmlForTask(task);
             document.querySelector(`#${task.column} .column__tasks-wrapper`)?.appendChild(taskElement);
-            ModalUtils.createModalForTask(taskElement);
+            if(callableForTaskElement) callableForTaskElement(taskElement);
         })
     };
 
@@ -115,7 +113,5 @@ class TaskManager{
         column.textContent = `(${this.#tasks.filter(task => task.column === name).length})`
     }
 }
-
-
 
 export default new TaskManager();
