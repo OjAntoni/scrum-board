@@ -174,5 +174,32 @@
   min-height: 180px;
 }
 
+#deleteAllModal{
+  .modal-content{
+    width: 30%;
+    min-width: 200px;
+  }
+  h3{
+    text-align: center;
+    margin-bottom: 15px;
+  }
+}
+.btn-flex{
+  display: flex;
+  justify-content: center;
+  column-gap: 10px;
+
+  .remove-btn{
+    background-color: #d23d3d;
+    padding: 5px 8px;
+    border-radius: 5px;
+  }
+  .cancel-btn{
+    background-color: #bbbbbb;
+    padding: 5px 8px;
+    border-radius: 5px;
+  }
+}
+
 
 

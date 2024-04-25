@@ -1,5 +1,25 @@
 import TaskManager from "./TaskManager";
-import {COLORS} from "./TaskManager"
+import {COLORS} from "./colors"
+
+export function configureDeleteAllModal() {
+    let deleteAllSpan = document.querySelector('#done .close');
+    let modal = document.getElementById('deleteAllModal');
+    configureModalDefault(modal, deleteAllSpan);
+
+    modal.querySelector('.remove-btn').addEventListener('click', () => {
+        document.querySelectorAll('#done .task').forEach(task => {
+            TaskManager.removeTask(TaskManager.parseIdFromTaskElement(task));
+        })
+        TaskManager.renderColumnCounter("done");
+        closeModal(modal);
+    })
+
+    modal.querySelector('.cancel-btn').addEventListener('click', () => {
+        closeModal(modal);
+    });
+
+}
+
 
 export const configureModalDefault = (modal, elementToOpen) => {
     let span = modal.getElementsByClassName("close")[0];
@@ -58,6 +78,7 @@ export const configureAddTaskModal = () => {
         createModalForTask(taskElement);
         closeModal(modal);
         clearNewTaskForm();
+        TaskManager.renderColumnCounter("todo")
     });
 }
 

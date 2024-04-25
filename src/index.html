@@ -36,6 +36,7 @@
         <div class="column__header-wrapper">
             <h2 class="column__header">Done</h2>
             <p class="column__count"></p>
+            <span class="close">&times;</span>
         </div>
         <div class="column__tasks-wrapper">
         </div>
@@ -56,6 +57,17 @@
             <input type="date" id="date" name="date" required>
             <button type="submit" class="btn addTask-btn">Add task</button>
         </form>
+    </div>
+</div>
+
+<div id="deleteAllModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Do you want to delete all tasks from todo column?</h3>
+        <div class="btn-flex">
+            <button class="btn remove-btn">Remove</button>
+            <button class="btn cancel-btn">Cancel</button>
+        </div>
     </div>
 </div>
 

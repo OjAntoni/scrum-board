@@ -15,6 +15,7 @@ drake.on('drop', (el, target, source, sibling) => {
 
 ModalUtils.configureAddTaskModal();
 Clock.configureClock();
+ModalUtils.configureDeleteAllModal();
 
 TaskManager.renderTasks();
 TaskManager.renderColumnsCounters();
